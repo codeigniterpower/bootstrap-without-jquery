@@ -8,18 +8,18 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/tagawa/bootstrap-without-jquery.git"
+    "url": "https://github.com/ivangabriele/bootstrap-without-jquery.git"
   },
   "keywords": [
     "bootstrap",
     "jquery"
   ],
-  "author": "Daniel Davis",
+  "author": "Ivan Gabriele",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/tagawa/bootstrap-without-jquery/issues"
+    "url": "https://github.com/ivangabriele/bootstrap-without-jquery/issues"
   },
-  "homepage": "https://github.com/tagawa/bootstrap-without-jquery",
+  "homepage": "https://github.com/ivangabriele/bootstrap-without-jquery",
   "dependencies": {},
   "devDependencies": {
     "bower": "1.x",
