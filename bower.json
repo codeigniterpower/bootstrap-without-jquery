@@ -1,7 +1,7 @@
 {
   "name": "bootstrap-without-jquery-2",
   "main": "dist/bootstrap-without-jquery.js",
-  "version": "0.7.0",
+  "version": "0.7.1",
   "homepage": "https://github.com/ivangabriele/bootstrap-without-jquery",
   "authors": [
     "Ivan Gabriele"
