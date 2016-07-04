@@ -12,7 +12,9 @@
   },
   "keywords": [
     "bootstrap",
-    "jquery"
+    "jquery",
+    "es6",
+    "es2015"
   ],
   "author": "Ivan Gabriele",
   "license": "MIT",
