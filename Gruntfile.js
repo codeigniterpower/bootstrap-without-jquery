@@ -1,8 +1,18 @@
-module.exports = function(grunt) {
+module.exports = (grunt) => {
   'use strict';
 
   grunt.initConfig({
-    pkg: grunt.file.readJSON('package.json'),
+    babel: {
+        options: {
+            sourceMap: false,
+            presets: ['es2015']
+        },
+        dist: {
+            files: {
+                'dist/bootstrap-without-jquery.js': 'src/bootstrap-without-jquery.js'
+            }
+        }
+    },
     jshint: {
       options: {
         browser: true,
@@ -21,34 +31,21 @@ module.exports = function(grunt) {
       },
       all: ['bower.json', 'package.json', 'bootstrap2/bootstrap-without-jquery.js', 'bootstrap3/bootstrap-without-jquery.js']
     },
-    concat: {
-      options: {
-        separator: '\n;\n'
-      },
-      b3: {
-        src: ['lib/classList.js', 'bootstrap3/<%= pkg.name %>.js'],
-        dest: 'tmp/<%= pkg.name %>.js'
-      }
-    },
     uglify: {
       options: {
-        preserveComments: 'some',
-        report: 'gzip'
-      },
-      b2: {
-        src: 'bootstrap2/<%= pkg.name %>.js',
-        dest: 'bootstrap2/<%= pkg.name %>.min.js'
-      },
-      b3: {
-        src: 'tmp/<%= pkg.name %>.js',
-        dest: 'bootstrap3/<%= pkg.name %>.min.js'
+        preserveComments: false,
+        sourceMap: false
       }
-    },
-  });
+      dist: {
+        files: {
+          'dist/bootstrap-without-jquery.min.js': 'dist/bootstrap-without-jquery.js',
+        }
+      }
+    }
+  })
 
-  grunt.loadNpmTasks('grunt-contrib-jshint');
-  grunt.loadNpmTasks('grunt-contrib-concat');
-  grunt.loadNpmTasks('grunt-contrib-uglify');
+  grunt.loadNpmTasks('grunt-contrib-jshint')
+  grunt.loadNpmTasks('grunt-contrib-uglify')
 
-  grunt.registerTask('default', ['jshint', 'concat', 'uglify']);
-};
+  grunt.registerTask('default', ['babel', 'uglify'])
+}
