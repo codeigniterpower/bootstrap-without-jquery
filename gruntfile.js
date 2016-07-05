@@ -52,10 +52,11 @@ module.exports = grunt => {
     'jshint',
     'babel',
     'uglify',
-    'copy:es6'
+    'copy:es6',
+    'copy:distToDemo'
   ])
 
-  // Created as a custom task because of an obscure warning :
+  // Registed as a custom task because of an obscure warning :
   // "Cannot create property subarray" (linked to grunt-contrib-uglify)
   grunt.registerTask('uglify', () => {
     const file = 'dist/bootstrap-without-jquery'

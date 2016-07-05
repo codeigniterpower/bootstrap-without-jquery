@@ -1,6 +1,6 @@
 # Bootstrap without jQuery
 
-> A lightweight script (< 5k) to replace both
+> A lightweight script (< 4k) to replace both
 [Twitter Bootstrap](http://getbootstrap.com/) JS script and its jQuery
 dependency.
 
