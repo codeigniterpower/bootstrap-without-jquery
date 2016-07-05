@@ -103,7 +103,6 @@
 
     show() {
       this._targetNode.addEventListener('transitionend', () => {
-        console.log(123)
         this.complete(false);
       });
 

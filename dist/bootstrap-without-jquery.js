@@ -136,7 +136,6 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         var _this2 = this;
 
         this._targetNode.addEventListener('transitionend', function () {
-          console.log(123);
           _this2.complete(false);
         });
 
