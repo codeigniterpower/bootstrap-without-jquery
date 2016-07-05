@@ -33,7 +33,6 @@
     "grunt-contrib-copy": "1.0.0",
     "grunt-contrib-jshint": "1.0.0",
     "grunt-contrib-watch": "^1.0.0",
-    "grunt-replace": "^1.0.1",
     "load-grunt-tasks": "^3.5.0",
     "uglify-js": "^2.7.0"
   }

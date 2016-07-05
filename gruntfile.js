@@ -21,23 +21,6 @@ module.exports = grunt => {
       }
     },
     copy: {
-      bootstrapExample: {
-        expand: true,
-        flatten: true,
-        cwd: 'bootstrap/docs/examples/theme',
-        src: '*',
-        dest: 'demo'
-      },
-      bootstrapAssets: {
-        expand: true,
-        // flatten: true,
-        cwd: 'bootstrap/docs',
-        src: [
-          'assets/**',
-          'dist/**'
-        ],
-        dest: 'demo'
-      },
       distToDemo: {
         expand: true,
         cwd: 'dist',
@@ -59,32 +42,6 @@ module.exports = grunt => {
         jshintrc: '.jshintrc'
       }
     },
-    replace: {
-      demo: {
-        options: {
-          patterns: [
-            {
-              match: /\.\.\/\.\.\//g,
-              replacement: ''
-            },
-            {
-              match: /(<\/body>)/g,
-              replacement: '<script src="bootstrap-without-jquery.js"></script>$1'
-            },
-            {
-              match: /<script.*\/script>/g,
-              replacement: ''
-            }
-          ]
-        },
-        files: [{
-          expand: true,
-          flatten: true,
-          src: 'demo/index.html',
-          dest: 'demo'
-        }]
-      },
-    },
     watch: {
       files: 'src/**/*.js',
       tasks: ['babel', 'copy:distToDemo']
@@ -92,17 +49,10 @@ module.exports = grunt => {
   })
 
   grunt.registerTask('build', [
-    // 'demo',
     'jshint',
     'babel',
     'uglify',
     'copy:es6'
-  ])
-
-  grunt.registerTask('demo', [
-    'copy:bootstrapExample',
-    'copy:bootstrapAssets',
-    'replace',
   ])
 
   // Created as a custom task because of an obscure warning :
