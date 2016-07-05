@@ -9,12 +9,9 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
   var Utils = {
     // Get an event's target element and the element specified by the "data-target" attribute
-    getTargets: function getTargets(event) {
-      var targets = {};
-      targets.evTarget = event.currentTarget;
-      var dataTarget = targets.evTarget.getAttribute('data-target');
-      targets.dataTarget = dataTarget ? document.querySelector(dataTarget) : false;
-      return targets;
+    getTarget: function getTarget(event) {
+      var dataTarget = event.currentTarget.getAttribute('data-target');
+      return dataTarget ? document.querySelector(dataTarget) : null;
     },
 
     // Get the potential max height of an element
@@ -24,7 +21,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       element.style.height = 'auto';
       var maxHeight = getComputedStyle(element).height;
       element.style.height = prevHeight;
-      element.offsetHeight; // force repaint
+      // element.offsetHeight // force repaint
       return maxHeight;
     },
 
@@ -38,25 +35,55 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       } else {
         element.fireEvent('on' + eventType);
       }
+    },
+
+    remove: function remove(event) {
+      var node = event.currentTarget;
+      node.parentNode.removeChild(node);
     }
   };
 
-  var DropDownComponent = function () {
-    function DropDownComponent(node) {
-      _classCallCheck(this, DropDownComponent);
+  var DismissableAlertComponent = function () {
+    function DismissableAlertComponent(node) {
+      _classCallCheck(this, DismissableAlertComponent);
+
+      node.addEventListener('click', this.close);
+    }
+
+    _createClass(DismissableAlertComponent, [{
+      key: 'close',
+      value: function close(event) {
+        event.preventDefault();
+
+        var alertNode = event.currentTarget.parentNode;
+
+        if (alertNode.classList.contains('fade')) {
+          alertNode.addEventListener('transitionend', Utils.remove, false);
+        } else {
+          Utils.remove(alertNode);
+        }
+
+        alertNode.classList.remove('in');
+      }
+    }]);
+
+    return DismissableAlertComponent;
+  }();
+
+  var DropDownMenuComponent = function () {
+    function DropDownMenuComponent(node) {
+      _classCallCheck(this, DropDownMenuComponent);
 
       node.addEventListener('click', this.open);
       node.addEventListener('blur', this.close);
     }
 
-    _createClass(DropDownComponent, [{
+    _createClass(DropDownMenuComponent, [{
       key: 'open',
       value: function open(event) {
         // Block anchors default behavior
         event.preventDefault();
         event.currentTarget.parentElement.classList.toggle('open');
-
-        return false;
       }
     }, {
       key: 'close',
@@ -69,12 +96,10 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         if (event.relatedTarget && event.relatedTarget.getAttribute('data-toggle') !== 'dropdown') {
           event.relatedTarget.click();
         }
-
-        return false;
       }
     }]);
 
-    return DropDownComponent;
+    return DropDownMenuComponent;
   }();
 
   /*
@@ -114,7 +139,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
     // Reset element's height
     element.style.height = getComputedStyle(element).height;
-    element.offsetHeight; // force repaint
+    // element.offsetHeight; // force repaint
     element.style.height = '0px';
   }
 
@@ -152,72 +177,16 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
     collapsibleList[i].onclick = doCollapse;
   }
 
-  /*
-   * Alert dismiss action
-   * 1. Get list of all elements that are alert dismiss buttons
-   * 2. Add click event listener to these elements
-   * 3. When clicked, find the target or parent element with class name "alert"
-   * 4. Remove that element from the DOM
-   */
-
-  // Start the collapse action on the chosen element
-  function doDismiss(event) {
-    event.preventDefault();
-    // Get target element from data-target attribute
-    var targets = Utils.getTargets(event);
-    var target = targets.dataTarget;
-
-    if (!target) {
-      // If data-target not specified, get parent or grandparent node with class="alert"
-      var parent = targets.evTarget.parentNode;
-      if (parent.classList.contains('alert')) {
-        target = parent;
-      } else if (parent.parentNode.classList.contains('alert')) {
-        target = parent.parentNode;
-      }
-    }
-
-    Utils.fireTrigger(target, 'close.bs.alert');
-    target.classList.remove('in');
-
-    function removeElement() {
-      // Remove alert from DOM
-      try {
-        target.parentNode.removeChild(target);
-        Utils.fireTrigger(target, 'closed.bs.alert');
-      } catch (e) {
-        window.console.error('Unable to remove alert');
-      }
-    }
-
-    // Call the complete() function after the transition has finished
-    if (target.classList.contains('fade')) {
-      target.addEventListener('transitionend', function () {
-        removeElement();
-      }, false);
-    } else {
-      removeElement();
-    }
-
-    return false;
-  }
-
-  // Get all alert dismiss buttons and add click event listeners
-  var dismissList = document.querySelectorAll('[data-dismiss=alert]');
-  for (var j = 0, lenj = dismissList.length; j < lenj; j++) {
-    dismissList[j].onclick = doDismiss;
-  }
-
-  var dropDownNodes = document.querySelectorAll('[data-toggle=dropdown]');
+  var alertNodes = document.querySelectorAll('[data-dismiss=alert]');
   var _iteratorNormalCompletion = true;
   var _didIteratorError = false;
   var _iteratorError = undefined;
 
   try {
-    for (var _iterator = dropDownNodes[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-      var dropDownNode = _step.value;
+    for (var _iterator = alertNodes[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+      var alertNode = _step.value;
 
-      new DropDownComponent(dropDownNode);
+      new DismissableAlertComponent(alertNode);
     }
   } catch (err) {
     _didIteratorError = true;
@@ -230,6 +199,32 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
     } finally {
       if (_didIteratorError) {
         throw _iteratorError;
+      }
+    }
+  }
+
+  var dropDownNodes = document.querySelectorAll('[data-toggle=dropdown]');
+  var _iteratorNormalCompletion2 = true;
+  var _didIteratorError2 = false;
+  var _iteratorError2 = undefined;
+
+  try {
+    for (var _iterator2 = dropDownNodes[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+      var dropDownNode = _step2.value;
+
+      new DropDownMenuComponent(dropDownNode);
+    }
+  } catch (err) {
+    _didIteratorError2 = true;
+    _iteratorError2 = err;
+  } finally {
+    try {
+      if (!_iteratorNormalCompletion2 && _iterator2.return) {
+        _iterator2.return();
+      }
+    } finally {
+      if (_didIteratorError2) {
+        throw _iteratorError2;
       }
     }
   }
