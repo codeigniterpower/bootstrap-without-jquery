@@ -8,35 +8,11 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
   'use strict';
 
   var Utils = {
-    // Get an event's target element and the element specified by the "data-target" attribute
-    getTarget: function getTarget(event) {
-      var dataTarget = event.currentTarget.getAttribute('data-target');
-      return dataTarget ? document.querySelector(dataTarget) : null;
-    },
-
-    // Get the potential max height of an element
-    getMaxHeight: function getMaxHeight(element) {
-      // Source: http://n12v.com/css-transition-to-from-auto/
-      var prevHeight = element.style.height;
-      element.style.height = 'auto';
-      var maxHeight = getComputedStyle(element).height;
-      element.style.height = prevHeight;
-      // element.offsetHeight // force repaint
-      return maxHeight;
-    },
-
-    // Fire a specified event
-    // Source: http://youmightnotneedjquery.com/
-    fireTrigger: function fireTrigger(element, eventType) {
-      if (document.createEvent) {
-        var event = document.createEvent('HTMLEvents');
-        event.initEvent(eventType, true, false);
-        element.dispatchEvent(event);
-      } else {
-        element.fireEvent('on' + eventType);
-      }
-    },
-
+    /**
+     * Remove
+     * @param  {HTMLElement|Event} nodeOrEvent [description]
+     * @return {void}
+     */
     remove: function remove(nodeOrEvent) {
       var node = nodeOrEvent.constructor.name === 'HTMLDivElement' ? nodeOrEvent : nodeOrEvent.currentTarget;
 
@@ -103,91 +79,123 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
     return DropDownMenuComponent;
   }();
 
-  /*
-   * Collapse action
-   * 1. Get list of all elements that are collapse triggers
-   * 2. Add click event listener to these elements
-   * 3. When clicked, change target element's class name from "collapse" to "collapsing"
-   * 4. When action (collapse) is complete, change target element's class name from "collapsing" to "collapse in"
-   * 5. Do the reverse, i.e. "collapse in" -> "collapsing" -> "collapse"
-   */
+  var CollapsableBehavior = function () {
+    // private _originNode
+    // private _targetNode
 
-  // Show a target element
+    function CollapsableBehavior(node) {
+      var _this = this;
 
+      _classCallCheck(this, CollapsableBehavior);
 
-  function show(element, trigger) {
-    element.classList.remove('collapse');
-    element.classList.add('collapsing');
-    trigger.classList.remove('collapsed');
-    trigger.setAttribute('aria-expanded', true);
+      this._originNode = node;
+      var targetSelector = node.getAttribute('data-target');
+      this._targetNode = document.querySelector(targetSelector);
 
-    // Set element's height to its maximum height
-    element.style.height = Utils.getMaxHeight(element);
-
-    // Call the complete() function after the transition has finished
-    element.addEventListener('transitionend', function () {
-      complete(element);
-    }, false);
-  }
-
-  // Hide a target element
-  function hide(element, trigger) {
-    element.classList.remove('collapse');
-    element.classList.remove('in');
-    element.classList.add('collapsing');
-    trigger.classList.add('collapsed');
-    trigger.setAttribute('aria-expanded', false);
-
-    // Reset element's height
-    element.style.height = getComputedStyle(element).height;
-    // element.offsetHeight; // force repaint
-    element.style.height = '0px';
-  }
-
-  // Change classes once transition is complete
-  function complete(element) {
-    element.classList.remove('collapsing');
-    element.classList.add('collapse');
-    element.setAttribute('aria-expanded', false);
-
-    // Check whether the element is unhidden
-    if (element.style.height !== '0px') {
-      element.classList.add('in');
-      element.style.height = 'auto';
+      node.addEventListener('click', function (event) {
+        _this.toggle(event);
+      });
     }
-  }
 
-  // Start the collapse action on the chosen element
-  function doCollapse(event) {
-    event.preventDefault();
-    var targets = Utils.getTargets(event);
-    var dataTarget = targets.dataTarget;
+    /**
+     * Set an element to its the potential maximum height
+     *
+     * @see http://stackoverflow.com/a/3485654/2736233
+     *
+     * @param  {HTMLElement} node DOM element
+     * @return {void}
+     */
 
-    // Add the "in" class name when elements are unhidden
-    if (dataTarget.classList.contains('in')) {
-      hide(dataTarget, targets.evTarget);
-    } else {
-      show(dataTarget, targets.evTarget);
-    }
-    return false;
-  }
 
-  // Get all elements that are collapse triggers and add click event listeners
-  var collapsibleList = document.querySelectorAll('[data-toggle=collapse]');
-  for (var i = 0, leni = collapsibleList.length; i < leni; i++) {
-    collapsibleList[i].onclick = doCollapse;
-  }
+    _createClass(CollapsableBehavior, [{
+      key: '_setMaxHeight',
+      value: function _setMaxHeight(node) {
+        var currentHeight = node.style.height;
+        node.style.height = 'auto';
+        var maxHeight = getComputedStyle(node).height;
 
-  var alertNodes = document.querySelectorAll('[data-dismiss=alert]');
+        // Force re-paint
+        // @see http://stackoverflow.com/a/3485654/2736233
+        node.style.height = currentHeight;
+        this._targetNode.offsetHeight; // jshint ignore:line
+
+        node.style.height = maxHeight;
+      }
+    }, {
+      key: 'toggle',
+      value: function toggle(event) {
+        if (this._targetNode.classList.contains('in')) {
+          this.hide();
+        } else {
+          this.show();
+        }
+      }
+    }, {
+      key: 'show',
+      value: function show() {
+        var _this2 = this;
+
+        this._targetNode.addEventListener('transitionend', function () {
+          console.log(123);
+          _this2.complete(false);
+        });
+
+        this._originNode.setAttribute('aria-expanded', true);
+        this._targetNode.classList.remove('collapse');
+        this._targetNode.classList.add('collapsing');
+        this._targetNode.style.height = '1px';
+        this._setMaxHeight(this._targetNode);
+        this._targetNode.setAttribute('aria-expanded', true);
+      }
+    }, {
+      key: 'hide',
+      value: function hide() {
+        var _this3 = this;
+
+        this._targetNode.addEventListener('transitionend', function () {
+          _this3.complete(true);
+        }, false);
+
+        this._originNode.setAttribute('aria-expanded', false);
+        this._originNode.classList.remove('collapse');
+        this._targetNode.classList.add('collapsing');
+
+        // Force re-paint
+        // @see http://stackoverflow.com/a/3485654/2736233
+        this._targetNode.style.height = getComputedStyle(this._targetNode).height;
+        this._targetNode.offsetHeight; // jshint ignore:line
+
+        this._targetNode.style.height = '1px';
+        this._targetNode.setAttribute('aria-expanded', false);
+      }
+    }, {
+      key: 'complete',
+      value: function complete(isHiding) {
+        this._targetNode.classList.remove('collapsing');
+        this._targetNode.classList.add('collapse');
+        this._targetNode.style.height = 'auto';
+
+        if (!isHiding) {
+          this._targetNode.classList.add('in');
+        } else {
+          this._targetNode.classList.remove('in');
+        }
+      }
+    }]);
+
+    return CollapsableBehavior;
+  }();
+
+  var collapsableNodes = document.querySelectorAll('[data-toggle=collapse]');
   var _iteratorNormalCompletion = true;
   var _didIteratorError = false;
   var _iteratorError = undefined;
 
   try {
-    for (var _iterator = alertNodes[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-      var alertNode = _step.value;
+    for (var _iterator = collapsableNodes[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+      var collapsableNode = _step.value;
 
-      new DismissableAlertComponent(alertNode);
+      new CollapsableBehavior(collapsableNode);
     }
   } catch (err) {
     _didIteratorError = true;
@@ -204,16 +212,16 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
     }
   }
 
-  var dropDownNodes = document.querySelectorAll('[data-toggle=dropdown]');
+  var alertNodes = document.querySelectorAll('[data-dismiss=alert]');
   var _iteratorNormalCompletion2 = true;
   var _didIteratorError2 = false;
   var _iteratorError2 = undefined;
 
   try {
-    for (var _iterator2 = dropDownNodes[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
-      var dropDownNode = _step2.value;
+    for (var _iterator2 = alertNodes[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+      var alertNode = _step2.value;
 
-      new DropDownMenuComponent(dropDownNode);
+      new DismissableAlertComponent(alertNode);
     }
   } catch (err) {
     _didIteratorError2 = true;
@@ -226,6 +234,32 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
     } finally {
       if (_didIteratorError2) {
         throw _iteratorError2;
+      }
+    }
+  }
+
+  var dropDownNodes = document.querySelectorAll('[data-toggle=dropdown]');
+  var _iteratorNormalCompletion3 = true;
+  var _didIteratorError3 = false;
+  var _iteratorError3 = undefined;
+
+  try {
+    for (var _iterator3 = dropDownNodes[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
+      var dropDownNode = _step3.value;
+
+      new DropDownMenuComponent(dropDownNode);
+    }
+  } catch (err) {
+    _didIteratorError3 = true;
+    _iteratorError3 = err;
+  } finally {
+    try {
+      if (!_iteratorNormalCompletion3 && _iterator3.return) {
+        _iterator3.return();
+      }
+    } finally {
+      if (_didIteratorError3) {
+        throw _iteratorError3;
       }
     }
   }

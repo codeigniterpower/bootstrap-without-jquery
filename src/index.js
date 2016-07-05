@@ -3,35 +3,11 @@
   'use strict'
 
   const Utils = {
-    // Get an event's target element and the element specified by the "data-target" attribute
-    getTarget: (event) => {
-      const dataTarget = event.currentTarget.getAttribute('data-target')
-      return dataTarget ? document.querySelector(dataTarget) : null
-    },
-
-    // Get the potential max height of an element
-    getMaxHeight: (element) => {
-      // Source: http://n12v.com/css-transition-to-from-auto/
-      var prevHeight = element.style.height
-      element.style.height = 'auto'
-      var maxHeight = getComputedStyle(element).height
-      element.style.height = prevHeight
-      // element.offsetHeight // force repaint
-      return maxHeight
-    },
-
-    // Fire a specified event
-    // Source: http://youmightnotneedjquery.com/
-    fireTrigger: (element, eventType) => {
-      if (document.createEvent) {
-        var event = document.createEvent('HTMLEvents')
-        event.initEvent(eventType, true, false)
-        element.dispatchEvent(event)
-      } else {
-        element.fireEvent('on' + eventType)
-      }
-    },
-
+    /**
+     * Remove
+     * @param  {HTMLElement|Event} nodeOrEvent [description]
+     * @return {void}
+     */
     remove: (nodeOrEvent) => {
       const node = nodeOrEvent.constructor.name === 'HTMLDivElement' ?
                    nodeOrEvent : nodeOrEvent.currentTarget
@@ -84,77 +60,95 @@
     }
   }
 
-  /*
-   * Collapse action
-   * 1. Get list of all elements that are collapse triggers
-   * 2. Add click event listener to these elements
-   * 3. When clicked, change target element's class name from "collapse" to "collapsing"
-   * 4. When action (collapse) is complete, change target element's class name from "collapsing" to "collapse in"
-   * 5. Do the reverse, i.e. "collapse in" -> "collapsing" -> "collapse"
-   */
+  class CollapsableBehavior {
+    // private _originNode
+    // private _targetNode
 
-  // Show a target element
-  function show(element, trigger) {
-    element.classList.remove('collapse');
-    element.classList.add('collapsing');
-    trigger.classList.remove('collapsed');
-    trigger.setAttribute('aria-expanded', true);
+    constructor(node) {
+      this._originNode = node
+      const targetSelector = node.getAttribute('data-target')
+      this._targetNode = document.querySelector(targetSelector)
 
-    // Set element's height to its maximum height
-    element.style.height = Utils.getMaxHeight(element);
+      node.addEventListener('click', (event) => { this.toggle(event) })
+    }
 
-    // Call the complete() function after the transition has finished
-    element.addEventListener('transitionend', function() {
-      complete(element);
-    }, false);
-  }
+    /**
+     * Set an element to its the potential maximum height
+     *
+     * @see http://stackoverflow.com/a/3485654/2736233
+     *
+     * @param  {HTMLElement} node DOM element
+     * @return {void}
+     */
+    _setMaxHeight(node) {
+      const currentHeight = node.style.height
+      node.style.height = 'auto'
+      const maxHeight = getComputedStyle(node).height
 
-  // Hide a target element
-  function hide(element, trigger) {
-    element.classList.remove('collapse');
-    element.classList.remove('in');
-    element.classList.add('collapsing');
-    trigger.classList.add('collapsed');
-    trigger.setAttribute('aria-expanded', false);
+      // Force re-paint
+      // @see http://stackoverflow.com/a/3485654/2736233
+      node.style.height = currentHeight
+      this._targetNode.offsetHeight; // jshint ignore:line
 
-    // Reset element's height
-    element.style.height = getComputedStyle(element).height;
-    // element.offsetHeight; // force repaint
-    element.style.height = '0px';
-  }
+      node.style.height = maxHeight;
+    }
 
-  // Change classes once transition is complete
-  function complete(element) {
-    element.classList.remove('collapsing');
-    element.classList.add('collapse');
-    element.setAttribute('aria-expanded', false);
+    toggle(event) {
+      if (this._targetNode.classList.contains('in')) {
+        this.hide();
+      } else {
+        this.show();
+      }
+    }
 
-    // Check whether the element is unhidden
-    if (element.style.height !== '0px') {
-      element.classList.add('in');
-      element.style.height = 'auto';
+    show() {
+      this._targetNode.addEventListener('transitionend', () => {
+        console.log(123)
+        this.complete(false);
+      });
+
+      this._originNode.setAttribute('aria-expanded', true)
+      this._targetNode.classList.remove('collapse')
+      this._targetNode.classList.add('collapsing')
+      this._targetNode.style.height = '1px'
+      this._setMaxHeight(this._targetNode)
+      this._targetNode.setAttribute('aria-expanded', true);
+    }
+
+    hide() {
+      this._targetNode.addEventListener('transitionend', () => {
+        this.complete(true);
+      }, false);
+
+      this._originNode.setAttribute('aria-expanded', false)
+      this._originNode.classList.remove('collapse')
+      this._targetNode.classList.add('collapsing')
+
+      // Force re-paint
+      // @see http://stackoverflow.com/a/3485654/2736233
+      this._targetNode.style.height = getComputedStyle(this._targetNode).height;
+      this._targetNode.offsetHeight; // jshint ignore:line
+
+      this._targetNode.style.height = '1px'
+      this._targetNode.setAttribute('aria-expanded', false);
+    }
+
+    complete(isHiding) {
+      this._targetNode.classList.remove('collapsing');
+      this._targetNode.classList.add('collapse');
+      this._targetNode.style.height = 'auto';
+
+      if (!isHiding) {
+        this._targetNode.classList.add('in');
+      } else {
+        this._targetNode.classList.remove('in');
+      }
     }
   }
 
-  // Start the collapse action on the chosen element
-  function doCollapse(event) {
-    event.preventDefault();
-    var targets = Utils.getTargets(event);
-    var dataTarget = targets.dataTarget;
-
-    // Add the "in" class name when elements are unhidden
-    if (dataTarget.classList.contains('in')) {
-      hide(dataTarget, targets.evTarget);
-    } else {
-      show(dataTarget, targets.evTarget);
-    }
-    return false;
-  }
-
-  // Get all elements that are collapse triggers and add click event listeners
-  var collapsibleList = document.querySelectorAll('[data-toggle=collapse]');
-  for (var i = 0, leni = collapsibleList.length; i < leni; i++) {
-    collapsibleList[i].onclick = doCollapse;
+  const collapsableNodes = document.querySelectorAll('[data-toggle=collapse]')
+  for (let collapsableNode of collapsableNodes) {
+    new CollapsableBehavior(collapsableNode);
   }
 
   const alertNodes = document.querySelectorAll('[data-dismiss=alert]')
