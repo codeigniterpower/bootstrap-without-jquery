@@ -43,13 +43,17 @@ module.exports = grunt => {
         cwd: 'dist',
         src: 'bootstrap-without-jquery.js',
         dest: 'demo'
+      },
+      es6: {
+        src: 'src/index.js',
+        dest: 'dist/bootstrap-without-jquery.es6'
       }
     },
     jshint: {
       all: [
         'bower.json',
         'package.json',
-        'src/bootstrap-without-jquery.js'
+        'src/index.js'
       ],
       options: {
         jshintrc: '.jshintrc'
@@ -91,11 +95,13 @@ module.exports = grunt => {
     'demo',
     'jshint',
     'babel',
-    'uglify'
+    'uglify',
+    'copy:es6'
   ])
 
   grunt.registerTask('demo', [
-    'copy',
+    'copy:bootstrapExample',
+    'copy:bootstrapAssets',
     'replace',
   ])
 
