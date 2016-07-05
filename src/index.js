@@ -1,45 +1,68 @@
-(function() {
-  'use strict';
 
-  console.log(123);
+(function(window, document) {
+  'use strict'
 
-  /*
-   * Utility functions
-   */
+  const Utils = {
+    // Get an event's target element and the element specified by the "data-target" attribute
+    getTargets: (event) => {
+      var targets = {}
+      targets.evTarget = event.currentTarget
+      var dataTarget = targets.evTarget.getAttribute('data-target')
+      targets.dataTarget = (dataTarget) ? document.querySelector(dataTarget) : false
+      return targets
+    },
 
-  // Get an event's target element and the element specified by the "data-target" attribute
-  function getTargets(event) {
-    var targets = {};
-    event = event || window.event;
-    targets.evTarget = event.currentTarget || event.srcElement;
-    var dataTarget = targets.evTarget.getAttribute('data-target');
-    targets.dataTarget = (dataTarget) ? document.querySelector(dataTarget) : false;
-    return targets;
-  }
+    // Get the potential max height of an element
+    getMaxHeight: (element) => {
+      // Source: http://n12v.com/css-transition-to-from-auto/
+      var prevHeight = element.style.height
+      element.style.height = 'auto'
+      var maxHeight = getComputedStyle(element).height
+      element.style.height = prevHeight
+      element.offsetHeight // force repaint
+      return maxHeight
+    },
 
-  // Get the potential max height of an element
-  function getMaxHeight(element) {
-    // Source: http://n12v.com/css-transition-to-from-auto/
-    var prevHeight = element.style.height;
-    element.style.height = 'auto';
-    var maxHeight = getComputedStyle(element).height;
-    element.style.height = prevHeight;
-    element.offsetHeight; // force repaint
-    return maxHeight;
-  }
-
-  // Fire a specified event
-  // Source: http://youmightnotneedjquery.com/
-  function fireTrigger(element, eventType) {
-    if (document.createEvent) {
-      var event = document.createEvent('HTMLEvents');
-      event.initEvent(eventType, true, false);
-      element.dispatchEvent(event);
-    } else {
-      element.fireEvent('on' + eventType);
+    // Fire a specified event
+    // Source: http://youmightnotneedjquery.com/
+    fireTrigger: (element, eventType) => {
+      if (document.createEvent) {
+        var event = document.createEvent('HTMLEvents')
+        event.initEvent(eventType, true, false)
+        element.dispatchEvent(event)
+      } else {
+        element.fireEvent('on' + eventType)
+      }
     }
   }
 
+  class DropDownComponent {
+    constructor(node) {
+      node.addEventListener('click', this.open)
+      node.addEventListener('blur', this.close)
+    }
+
+    open(event) {
+      // Block anchors default behavior
+      event.preventDefault()
+      event.currentTarget.parentElement.classList.toggle('open')
+
+      return false
+    }
+
+    close(event) {
+      // Block anchors default behavior
+      event.preventDefault()
+      event.currentTarget.parentElement.classList.remove('open')
+
+      // Trigger the click event on the target if it not opening another menu
+      if (event.relatedTarget && event.relatedTarget.getAttribute('data-toggle') !== 'dropdown') {
+        event.relatedTarget.click()
+      }
+
+      return false
+    }
+  }
 
   /*
    * Collapse action
@@ -58,7 +81,7 @@
     trigger.setAttribute('aria-expanded', true);
 
     // Set element's height to its maximum height
-    element.style.height = getMaxHeight(element);
+    element.style.height = Utils.getMaxHeight(element);
 
     // Call the complete() function after the transition has finished
     element.addEventListener('transitionend', function() {
@@ -96,7 +119,7 @@
   // Start the collapse action on the chosen element
   function doCollapse(event) {
     event.preventDefault();
-    var targets = getTargets(event);
+    var targets = Utils.getTargets(event);
     var dataTarget = targets.dataTarget;
 
     // Add the "in" class name when elements are unhidden
@@ -127,7 +150,7 @@
   function doDismiss(event) {
     event.preventDefault();
     // Get target element from data-target attribute
-    var targets = getTargets(event);
+    var targets = Utils.getTargets(event);
     var target = targets.dataTarget;
 
     if (!target) {
@@ -140,14 +163,14 @@
       }
     }
 
-    fireTrigger(target, 'close.bs.alert');
+    Utils.fireTrigger(target, 'close.bs.alert');
     target.classList.remove('in');
 
     function removeElement() {
       // Remove alert from DOM
       try {
         target.parentNode.removeChild(target);
-        fireTrigger(target, 'closed.bs.alert');
+        Utils.fireTrigger(target, 'closed.bs.alert');
       } catch (e) {
         window.console.error('Unable to remove alert');
       }
@@ -171,42 +194,8 @@
     dismissList[j].onclick = doDismiss;
   }
 
-
-  /*
-   * Dropdown action
-   * 1. Get list of all elements that are dropdown triggers
-   * 2. Add click and blur event listeners to these elements
-   * 3. When clicked, add "open" to the target element's class names, or remove if it exists
-   * 4. On blur, remove "open" from the target element's class names
-   */
-
-  // Show a dropdown menu
-  function doDropdown(event) {
-    event = event || window.event;
-    var evTarget = event.currentTarget || event.srcElement;
-    evTarget.parentElement.classList.toggle('open');
-    return false;
+  const dropDownNodes = document.querySelectorAll('[data-toggle=dropdown]')
+  for (let dropDownNode of dropDownNodes) {
+    new DropDownComponent(dropDownNode);
   }
-
-  // Close a dropdown menu
-  function closeDropdown(event) {
-    event = event || window.event;
-    var evTarget = event.currentTarget || event.srcElement;
-    evTarget.parentElement.classList.remove('open');
-
-    // Trigger the click event on the target if it not opening another menu
-    if (event.relatedTarget && event.relatedTarget.getAttribute('data-toggle') !== 'dropdown') {
-      event.relatedTarget.click();
-    }
-    return false;
-  }
-
-  // Set event listeners for dropdown menus
-  var dropdownList = document.querySelectorAll('[data-toggle=dropdown]');
-  for (var k = 0, dropdown, lenk = dropdownList.length; k < lenk; k++) {
-    dropdown = dropdownList[k];
-    dropdown.setAttribute('tabindex', '0'); // Fix to make onblur work in Chrome
-    dropdown.onclick = doDropdown;
-    dropdown.onblur = closeDropdown;
-  }
-})();
+})(window, window.document);

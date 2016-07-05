@@ -7,7 +7,7 @@ module.exports = grunt => {
     babel: {
       dist: {
         files: {
-          'dist/bootstrap-without-jquery.js': 'src/bootstrap-without-jquery.js'
+          'dist/bootstrap-without-jquery.js': 'src/index.js'
         }
       }
     },
@@ -81,19 +81,8 @@ module.exports = grunt => {
         }]
       },
     },
-    uglify: {
-      dist: {
-        files: {
-          'dist/bootstrap-without-jquery.min.js': 'dist/bootstrap-without-jquery.js'
-        }
-      },
-      options: {
-        preserveComments: false,
-        sourceMap: false
-      }
-    },
     watch: {
-      files: 'src/bootstrap-without-jquery.js',
+      files: 'src/**/*.js',
       tasks: ['babel', 'copy:distToDemo']
     }
   })
@@ -109,6 +98,16 @@ module.exports = grunt => {
     'copy',
     'replace',
   ])
+
+  // Created as a custom task because of an obscure warning :
+  // "Cannot create property subarray" (linked to grunt-contrib-uglify)
+  grunt.registerTask('uglify', () => {
+    const file = 'dist/bootstrap-without-jquery'
+    const fs = require('fs')
+    const UglifyJS = require('uglify-js')
+    const result = UglifyJS.minify(`${file}.js`)
+    fs.writeFileSync(`${file}.min.js`, result.code)
+  });
 
   grunt.registerTask('default', ['browserSync', 'watch'])
 }
