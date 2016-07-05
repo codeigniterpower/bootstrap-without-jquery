@@ -89,7 +89,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       _classCallCheck(this, CollapsableBehavior);
 
       this._originNode = node;
-      var targetSelector = node.getAttribute('data-target');
+      var targetSelector = node.dataset.target ? node.dataset.target : node.hash;
       this._targetNode = document.querySelector(targetSelector);
 
       node.addEventListener('click', function (event) {
@@ -124,6 +124,8 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
     }, {
       key: 'toggle',
       value: function toggle(event) {
+        event.preventDefault();
+
         if (this._targetNode.classList.contains('in')) {
           this.hide();
         } else {

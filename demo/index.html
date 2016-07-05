@@ -15,6 +15,7 @@
     <link href="//maxcdn.bootstrapcdn.com/bootswatch/3.3.6/sandstone/bootstrap.min.css" rel="stylesheet">
     <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
     <link href="//bootswatch.com/assets/css/custom.min.css" rel="stylesheet">
+    <link href="custom.css" rel="stylesheet">
   </head>
 
   <body>
@@ -30,18 +31,26 @@
         </div>
         <div class="navbar-collapse collapse" id="navbar-main">
           <ul class="nav navbar-nav">
-            <li><a href="#" target="_blank">Item 1</a></li>
-            <li><a href="#" target="_blank">Item 2</a></li>
+            <li><a href="#alerts">Alerts</a></li>
             <li class="dropdown">
-              <a class="dropdown-toggle" data-toggle="dropdown" href="#" id="download">
-                Item 3 <span class="caret"></span>
+              <a class="dropdown-toggle" data-toggle="dropdown" href="#collapse">
+                Collapse <span class="caret"></span>
               </a>
-              <ul class="dropdown-menu" aria-labelledby="download">
+              <ul class="dropdown-menu" aria-labelledby="collapse">
+                <li><a href="#accordions">Accordions</a></li>
+              </ul>
+            </li>
+            <li><a href="#navbar">Navbar</a></li>
+            <!-- <li class="dropdown">
+              <a class="dropdown-toggle" data-toggle="dropdown" href="#dialogs">
+                Dialogs <span class="caret"></span>
+              </a>
+              <ul class="dropdown-menu" aria-labelledby="dialogs">
                 <li><a href="#">SubItem 1</a></li>
                 <li><a href="#">SubItem 2</a></li>
                 <li><a href="#">SubItem 3</a></li>
               </ul>
-            </li>
+            </li> -->
           </ul>
 
           <ul class="nav navbar-nav navbar-right">
@@ -70,51 +79,22 @@
         <div class="row">
           <div class="col-lg-12">
             <div class="page-header">
-              <h1 id="alerts">Alerts</h1>
+              <a class="anchor" id="alerts"></a>
+              <h1><a href="#alerts">Alerts</a></h1>
             </div>
           </div>
         </div>
 
         <div class="row">
-          <div class="col-lg-12">
-            <div class="bs-component">
-              <div class="alert alert-dismissible alert-warning">
-                <button type="button" class="close" data-dismiss="alert">×</button>
-                <h4>Warning!</h4>
-                <p>Best check yo self, you're not looking too good. Nulla vitae elit libero, a pharetra augue. Praesent commodo cursus magna, <a href="#" class="alert-link">vel scelerisque nisl consectetur et</a>.</p>
-              </div>
-            <div id="source-button" class="btn btn-primary btn-xs" style="display: none;">&lt; &gt;</div></div>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-lg-3">
-            <div class="bs-component">
-              <div class="alert alert-dismissible alert-danger">
-                <button type="button" class="close" data-dismiss="alert">×</button>
-                <strong>Oh snap !</strong> <a href="#" class="alert-link">
-                Change a few things up</a> and try submitting again.
-              </div>
-            </div>
-          </div>
-          <div class="col-lg-3">
+          <div class="col-lg-6">
             <div class="bs-component">
               <div class="alert alert-dismissible alert-success">
                 <button type="button" class="close" data-dismiss="alert">×</button>
-                <strong>Well done!</strong>
-                You successfully read <a href="#" class="alert-link">this important alert message</a>.
+                An simple alert.
               </div>
             </div>
           </div>
-          <div class="col-lg-3">
-            <div class="bs-component">
-              <div class="alert alert-dismissible alert-info">
-                <button type="button" class="close" data-dismiss="alert">×</button>
-                <strong>Heads up!</strong> This <a href="#" class="alert-link">alert needs your attention</a>,
-                but it's not super important.
-              </div>
-            </div>
-          </div>
-          <div class="col-lg-3">
+          <div class="col-lg-6">
             <div class="bs-component">
               <div class="alert alert-dismissible alert-info fade in">
                 <button type="button" class="close" data-dismiss="alert">×</button>
@@ -131,14 +111,18 @@
         <div class="row">
           <div class="col-lg-12">
             <div class="page-header">
-              <h1 id="collapse">Collapse</h1>
+              <a class="anchor" id="collapse"></a>
+              <h1><a href="#collapse">Collapse</a></h1>
             </div>
           </div>
         </div>
 
+        <!-- Accordions
+        ================================================== -->
         <div class="row">
           <div class="col-lg-12">
-            <h2>Accordions</h2>
+            <a class="anchor" id="accordions"></a>
+            <h2><a href="#accordions">Accordions</a></h2>
             <div class="bs-component">
               <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
                 <div class="panel panel-default">
@@ -195,7 +179,8 @@
         <div class="row">
           <div class="col-lg-12">
             <div class="page-header">
-              <h1 id="navbar">Navbar</h1>
+              <a class="anchor" id="navbar"></a>
+              <h1><a href="#navbar">Navbar</a></h1>
             </div>
 
             <div class="bs-component">
@@ -241,223 +226,13 @@
                 </div>
               </nav>
             </div>
-
-            <div class="bs-component">
-              <nav class="navbar navbar-inverse">
-                <div class="container-fluid">
-                  <div class="navbar-header">
-                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-2">
-                      <span class="sr-only">Toggle navigation</span>
-                      <span class="icon-bar"></span>
-                      <span class="icon-bar"></span>
-                      <span class="icon-bar"></span>
-                    </button>
-                    <a class="navbar-brand" href="#">Brand</a>
-                  </div>
-
-                  <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
-                    <ul class="nav navbar-nav">
-                      <li class="active"><a href="#">Link <span class="sr-only">(current)</span></a></li>
-                      <li><a href="#">Link</a></li>
-                      <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Dropdown <span class="caret"></span></a>
-                        <ul class="dropdown-menu" role="menu">
-                          <li><a href="#">Action</a></li>
-                          <li><a href="#">Another action</a></li>
-                          <li><a href="#">Something else here</a></li>
-                          <li class="divider"></li>
-                          <li><a href="#">Separated link</a></li>
-                          <li class="divider"></li>
-                          <li><a href="#">One more separated link</a></li>
-                        </ul>
-                      </li>
-                    </ul>
-                    <form class="navbar-form navbar-left" role="search">
-                      <div class="form-group">
-                        <input type="text" class="form-control" placeholder="Search">
-                      </div>
-                      <button type="submit" class="btn btn-default">Submit</button>
-                    </form>
-                    <ul class="nav navbar-nav navbar-right">
-                      <li><a href="#">Link</a></li>
-                    </ul>
-                  </div>
-                </div>
-              </nav>
-            </div><!-- /example -->
-
-          </div>
-        </div>
-      </div>
-
-      <!-- Navs
-      ================================================== -->
-      <div class="bs-docs-section">
-
-        <div class="row">
-          <div class="col-lg-12">
-            <div class="page-header">
-              <h1 id="navs">Navs</h1>
-            </div>
-          </div>
-        </div>
-
-        <div class="row">
-          <div class="col-lg-4">
-            <h2 id="nav-tabs">Tabs</h2>
-            <div class="bs-component">
-              <ul class="nav nav-tabs">
-                <li class="active"><a href="#home" data-toggle="tab">Home</a></li>
-                <li><a href="#profile" data-toggle="tab">Profile</a></li>
-                <li class="disabled"><a>Disabled</a></li>
-                <li class="dropdown">
-                  <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                    Dropdown <span class="caret"></span>
-                  </a>
-                  <ul class="dropdown-menu">
-                    <li><a href="#dropdown1" data-toggle="tab">Action</a></li>
-                    <li class="divider"></li>
-                    <li><a href="#dropdown2" data-toggle="tab">Another action</a></li>
-                  </ul>
-                </li>
-              </ul>
-              <div id="myTabContent" class="tab-content">
-                <div class="tab-pane fade active in" id="home">
-                  <p>Raw denim you probably haven't heard of them jean shorts Austin. Nesciunt tofu stumptown aliqua, retro synth master cleanse. Mustache cliche tempor, williamsburg carles vegan helvetica. Reprehenderit butcher retro keffiyeh dreamcatcher synth. Cosby sweater eu banh mi, qui irure terry richardson ex squid. Aliquip placeat salvia cillum iphone. Seitan aliquip quis cardigan american apparel, butcher voluptate nisi qui.</p>
-                </div>
-                <div class="tab-pane fade" id="profile">
-                  <p>Food truck fixie locavore, accusamus mcsweeney's marfa nulla single-origin coffee squid. Exercitation +1 labore velit, blog sartorial PBR leggings next level wes anderson artisan four loko farm-to-table craft beer twee. Qui photo booth letterpress, commodo enim craft beer mlkshk aliquip jean shorts ullamco ad vinyl cillum PBR. Homo nostrud organic, assumenda labore aesthetic magna delectus mollit.</p>
-                </div>
-                <div class="tab-pane fade" id="dropdown1">
-                  <p>Etsy mixtape wayfarers, ethical wes anderson tofu before they sold out mcsweeney's organic lomo retro fanny pack lo-fi farm-to-table readymade. Messenger bag gentrify pitchfork tattooed craft beer, iphone skateboard locavore carles etsy salvia banksy hoodie helvetica. DIY synth PBR banksy irony. Leggings gentrify squid 8-bit cred pitchfork.</p>
-                </div>
-                <div class="tab-pane fade" id="dropdown2">
-                  <p>Trust fund seitan letterpress, keytar raw denim keffiyeh etsy art party before they sold out master cleanse gluten-free squid scenester freegan cosby sweater. Fanny pack portland seitan DIY, art party locavore wolf cliche high life echo park Austin. Cred vinyl keffiyeh DIY salvia PBR, banh mi before they sold out farm-to-table VHS viral locavore cosby sweater.</p>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-lg-4">
-            <h2 id="nav-pills">Pills</h2>
-            <div class="bs-component">
-              <ul class="nav nav-pills">
-                <li class="active"><a href="#">Home</a></li>
-                <li><a href="#">Profile</a></li>
-                <li class="disabled"><a href="#">Disabled</a></li>
-                <li class="dropdown">
-                  <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                    Dropdown <span class="caret"></span>
-                  </a>
-                  <ul class="dropdown-menu">
-                    <li><a href="#">Action</a></li>
-                    <li><a href="#">Another action</a></li>
-                    <li><a href="#">Something else here</a></li>
-                    <li class="divider"></li>
-                    <li><a href="#">Separated link</a></li>
-                  </ul>
-                </li>
-              </ul>
-            </div>
-            <br>
-            <div class="bs-component">
-              <ul class="nav nav-pills nav-stacked">
-                <li class="active"><a href="#">Home</a></li>
-                <li><a href="#">Profile</a></li>
-                <li class="disabled"><a href="#">Disabled</a></li>
-                <li class="dropdown">
-                  <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                    Dropdown <span class="caret"></span>
-                  </a>
-                  <ul class="dropdown-menu">
-                    <li><a href="#">Action</a></li>
-                    <li><a href="#">Another action</a></li>
-                    <li><a href="#">Something else here</a></li>
-                    <li class="divider"></li>
-                    <li><a href="#">Separated link</a></li>
-                  </ul>
-                </li>
-              </ul>
-            </div>
-          </div>
-          <div class="col-lg-4">
-            <h2 id="nav-breadcrumbs">Breadcrumbs</h2>
-            <div class="bs-component">
-              <ul class="breadcrumb">
-                <li class="active">Home</li>
-              </ul>
-
-              <ul class="breadcrumb">
-                <li><a href="#">Home</a></li>
-                <li class="active">Library</li>
-              </ul>
-
-              <ul class="breadcrumb">
-                <li><a href="#">Home</a></li>
-                <li><a href="#">Library</a></li>
-                <li class="active">Data</li>
-              </ul>
-            </div>
-
-          </div>
-        </div>
-
-
-        <div class="row">
-          <div class="col-lg-4">
-            <h2 id="pagination">Pagination</h2>
-            <div class="bs-component">
-              <ul class="pagination">
-                <li class="disabled"><a href="#">&laquo;</a></li>
-                <li class="active"><a href="#">1</a></li>
-                <li><a href="#">2</a></li>
-                <li><a href="#">3</a></li>
-                <li><a href="#">4</a></li>
-                <li><a href="#">5</a></li>
-                <li><a href="#">&raquo;</a></li>
-              </ul>
-
-              <ul class="pagination pagination-lg">
-                <li class="disabled"><a href="#">&laquo;</a></li>
-                <li class="active"><a href="#">1</a></li>
-                <li><a href="#">2</a></li>
-                <li><a href="#">3</a></li>
-                <li><a href="#">&raquo;</a></li>
-              </ul>
-
-              <ul class="pagination pagination-sm">
-                <li class="disabled"><a href="#">&laquo;</a></li>
-                <li class="active"><a href="#">1</a></li>
-                <li><a href="#">2</a></li>
-                <li><a href="#">3</a></li>
-                <li><a href="#">4</a></li>
-                <li><a href="#">5</a></li>
-                <li><a href="#">&raquo;</a></li>
-              </ul>
-            </div>
-          </div>
-          <div class="col-lg-4">
-            <h2 id="pager">Pager</h2>
-            <div class="bs-component">
-              <ul class="pager">
-                <li><a href="#">Previous</a></li>
-                <li><a href="#">Next</a></li>
-              </ul>
-
-              <ul class="pager">
-                <li class="previous disabled"><a href="#">&larr; Older</a></li>
-                <li class="next"><a href="#">Newer &rarr;</a></li>
-              </ul>
-            </div>
-          </div>
-          <div class="col-lg-4">
-
           </div>
         </div>
       </div>
 
       <!-- Dialogs
       ================================================== -->
-      <div class="bs-docs-section">
+      <!-- <div class="bs-docs-section">
 
         <div class="row">
           <div class="col-lg-12">
@@ -528,7 +303,7 @@
           </div>
         </div>
       </div>
-    </div>
+    </div> -->
 
     <script src="bootstrap-without-jquery.js"></script>
   </body>

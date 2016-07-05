@@ -66,7 +66,7 @@
 
     constructor(node) {
       this._originNode = node
-      const targetSelector = node.getAttribute('data-target')
+      const targetSelector = node.dataset.target ? node.dataset.target : node.hash
       this._targetNode = document.querySelector(targetSelector)
 
       node.addEventListener('click', (event) => { this.toggle(event) })
@@ -90,10 +90,12 @@
       node.style.height = currentHeight
       this._targetNode.offsetHeight; // jshint ignore:line
 
-      node.style.height = maxHeight;
+      node.style.height = maxHeight
     }
 
     toggle(event) {
+      event.preventDefault()
+
       if (this._targetNode.classList.contains('in')) {
         this.hide();
       } else {
