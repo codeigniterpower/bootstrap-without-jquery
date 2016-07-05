@@ -20,8 +20,11 @@ https://bootstrap-without-jquery.herokuapp.com/
 
 ## Coverage
 
-- Dropdown menus (including "hamburger" menu icon)
-- Dismiss alert messages
+- Dismissable alerts
+- Dropdown menus
+- Collapsable elements
+  - Hamburger menu
+  - Accordions
 
 ## Dependencies
 
