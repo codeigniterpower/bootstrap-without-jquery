@@ -92,7 +92,7 @@ module.exports = grunt => {
   })
 
   grunt.registerTask('build', [
-    'demo',
+    // 'demo',
     'jshint',
     'babel',
     'uglify',
