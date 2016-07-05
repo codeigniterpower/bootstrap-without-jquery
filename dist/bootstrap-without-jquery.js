@@ -37,8 +37,9 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       }
     },
 
-    remove: function remove(event) {
-      var node = event.currentTarget;
+    remove: function remove(nodeOrEvent) {
+      var node = nodeOrEvent.constructor.name === 'HTMLDivElement' ? nodeOrEvent : nodeOrEvent.currentTarget;
+
       node.parentNode.removeChild(node);
     }
   };
@@ -81,15 +82,15 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
     _createClass(DropDownMenuComponent, [{
       key: 'open',
       value: function open(event) {
-        // Block anchors default behavior
         event.preventDefault();
+
         event.currentTarget.parentElement.classList.toggle('open');
       }
     }, {
       key: 'close',
       value: function close(event) {
-        // Block anchors default behavior
         event.preventDefault();
+
         event.currentTarget.parentElement.classList.remove('open');
 
         // Trigger the click event on the target if it not opening another menu

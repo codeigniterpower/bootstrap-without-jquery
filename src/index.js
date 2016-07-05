@@ -32,8 +32,10 @@
       }
     },
 
-    remove: (event) => {
-      const node = event.currentTarget;
+    remove: (nodeOrEvent) => {
+      const node = nodeOrEvent.constructor.name === 'HTMLDivElement' ?
+                   nodeOrEvent : nodeOrEvent.currentTarget
+
       node.parentNode.removeChild(node)
     }
   }
@@ -65,14 +67,14 @@
     }
 
     open(event) {
-      // Block anchors default behavior
       event.preventDefault()
+
       event.currentTarget.parentElement.classList.toggle('open')
     }
 
     close(event) {
-      // Block anchors default behavior
       event.preventDefault()
+
       event.currentTarget.parentElement.classList.remove('open')
 
       // Trigger the click event on the target if it not opening another menu
