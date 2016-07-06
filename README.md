@@ -4,13 +4,17 @@
 [Twitter Bootstrap](http://getbootstrap.com/) JS script and its jQuery
 dependency.
 
+[![NPM](https://img.shields.io/npm/v/bootstrap-without-jquery.svg?maxAge=2592000&style=flat-square)]()
+[![NPM](https://img.shields.io/npm/dm/bootstrap-without-jquery.svg?style=flat-square)]()
+[![Travis](https://img.shields.io/travis/ivangabriele/bootstrap-without-jquery.svg?maxAge=2592000&style=flat-square)]()
+
 ## Demo
 
 https://bootstrap-without-jquery.herokuapp.com/
 
 ## Installation
 
-### NPM
+### npm
 
     npm install bootstrap-without-jquery --save
 
