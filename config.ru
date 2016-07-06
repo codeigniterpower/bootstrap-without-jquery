@@ -1,6 +1,6 @@
 use Rack::Static,
   :urls => [
-    '/bootstrap-without-jquery.js'
+    '/bootstrap-without-jquery.js',
     '/custom.css'
   ],
   :root => 'demo'
