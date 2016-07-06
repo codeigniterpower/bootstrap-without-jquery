@@ -5,7 +5,7 @@
 dependency.
 
 [![NPM](https://img.shields.io/npm/v/bootstrap-without-jquery.svg?maxAge=2592000&style=flat-square)]()
-[![NPM](https://img.shields.io/npm/dm/bootstrap-without-jquery.svg?style=flat-square)]()
+[![NPM](https://img.shields.io/npm/dm/bootstrap-without-jquery.svg?maxAge=2592000&style=flat-square)]()
 [![Travis](https://img.shields.io/travis/ivangabriele/bootstrap-without-jquery.svg?maxAge=2592000&style=flat-square)]()
 
 ## Demo
