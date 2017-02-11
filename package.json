@@ -24,16 +24,15 @@
   "homepage": "https://github.com/ivangabriele/bootstrap-without-jquery",
   "dependencies": {},
   "devDependencies": {
-    "babel-preset-es2015": "6.9.0",
-    "bower": "1.7.9",
-    "grunt": "0.4.5",
-    "grunt-babel": "6.0.0",
-    "grunt-browser-sync": "2.2.0",
-    "grunt-contrib-concat": "0.3.0",
-    "grunt-contrib-copy": "1.0.0",
-    "grunt-contrib-jshint": "1.0.0",
+    "babel-preset-es2015": "^6.22.0",
+    "grunt": "^0.4.5",
+    "grunt-babel": "^6.0.0",
+    "grunt-browser-sync": "^2.2.0",
+    "grunt-contrib-concat": "^0.3.0",
+    "grunt-contrib-copy": "^1.0.0",
+    "grunt-contrib-jshint": "^1.1.0",
     "grunt-contrib-watch": "^1.0.0",
-    "load-grunt-tasks": "^3.5.0",
-    "uglify-js": "^2.7.0"
+    "load-grunt-tasks": "^3.5.2",
+    "uglify-js": "^2.7.5"
   }
 }
