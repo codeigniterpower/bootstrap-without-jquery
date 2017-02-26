@@ -4,9 +4,7 @@
 [Twitter Bootstrap](http://getbootstrap.com/) JS script and its jQuery
 dependency.
 
-[![NPM](https://img.shields.io/npm/v/bootstrap-without-jquery.svg?maxAge=2592000&style=flat-square)]()
-[![NPM](https://img.shields.io/npm/dm/bootstrap-without-jquery.svg?maxAge=2592000&style=flat-square)]()
-[![Travis](https://img.shields.io/travis/ivangabriele/bootstrap-without-jquery.svg?maxAge=2592000&style=flat-square)]()
+[![NPM](https://nodei.co/npm/bootstrap-without-jquery.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/bootstrap-without-jquery/)
 
 ## Demo
 
