@@ -29,6 +29,8 @@ https://bootstrap-without-jquery.herokuapp.com/
 - Collapsable elements
   - Hamburger menu
   - Accordions
+- Dialog elements
+  - Modals
 
 ## Dependencies
 
